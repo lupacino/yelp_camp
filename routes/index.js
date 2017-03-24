@@ -3,13 +3,12 @@ var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
 
+//Root Route
 router.get("/", function(req, res){
     res.render("landing");
 });
 
-//  ===========
-// AUTH ROUTES
-//  ===========
+
 
 // show register form
 router.get("/register", function(req, res){
@@ -41,12 +40,12 @@ router.post("/login", passport.authenticate("local",
     }), function(req, res){
 });
 
-// logic route
+// log out route
 router.get("/logout", function(req, res){
    req.logout();
    res.redirect("/campgrounds");
 });
-
+// Middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
