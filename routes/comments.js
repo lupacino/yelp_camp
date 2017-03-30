@@ -48,19 +48,18 @@ router.post("/",isLoggedIn,function(req, res){
 
 //edit comments route
 
-router.get("/:comments_id/edit", checkCommentOwnership,  function(req, res){
-    Comment.findById(req.params.comment_id, function (err, foundComment){
-        if(err){
-            res.redirect("back");
-        } else {
-            res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
-        }
-    });
-    
+router.get("/:comment_id/edit", checkCommentOwnership, function(req, res){
+   Comment.findById(req.params.comment_id, function(err, foundComment){
+      if(err){
+          res.redirect("back");
+      } else {
+        res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
+      }
+   });
 });
 
 //Update comments route
-router.put("/:comment_id", function(req, res){
+router.put("/:comment_id", checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComments){
         if(err){
             res.redirect("back");
@@ -72,7 +71,7 @@ router.put("/:comment_id", function(req, res){
 });
 
 //Destroy route
-router.delete("/:comment_id", function(req, res){
+router.delete("/:comment_id", checkCommentOwnership, function(req, res){
     //findbyidandremove
    Comment.findByIdAndRemove(req.params.comment_id, function(err){
        if(err){
